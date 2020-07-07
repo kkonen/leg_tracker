@@ -10,6 +10,10 @@ if(NOT Boost_FOUND)
     message(ERROR " Boost not found!")
 endif(NOT Boost_FOUND)
 
+
+SET("OpenCV_DIR" "/localhome/demo/opencv3/install/share/OpenCV/")
+find_package( OpenCV REQUIRED )
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
@@ -56,6 +60,7 @@ add_executable(
 )
 target_link_libraries(
   detect_leg_clusters 
+  ${OpenCV_LIBS}
   ${catkin_LIBRARIES}
 )
 
@@ -90,6 +95,7 @@ add_executable(
 )
 target_link_libraries(
   train_leg_detector
+  ${OpenCV_LIBS}
   ${catkin_LIBRARIES}
 )
 
@@ -117,9 +123,3 @@ install(
   PROGRAMS scripts/individual_leg_tracker.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-
-
-
-
-
-
