@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<!-- Not shown, but you can also include test bags to get a testing error!-->
+<launch>
+	
+  <arg name="save_file" value="$(find leg_tracker)/config/trained_leg_detector_cinementas.yaml" />
+
+  <arg name="pos_bag_1" value="$(find leg_tracker)/rosbags/positive_1_extracted.bag" />
+  <arg name="pos_bag_2" value="$(find leg_tracker)/rosbags/positive_2_extracted.bag" />
+  <arg name="pos_bag_3" value="$(find leg_tracker)/rosbags/positive_3_extracted.bag" />
+  <arg name="pos_scan_topic" value="/training_scan" />
+
+  <arg name="neg_bag_1" value="$(find leg_tracker)/rosbags/negative_1.bag" />
+  <arg name="neg_scan_topic_1" value="/scan_merged" />
+
+  <node pkg="leg_tracker" type="train_leg_detector" name="train_leg_detector" required="true"
+        args="--pos $(arg pos_bag_1) $(arg pos_scan_topic) 
+              --pos $(arg pos_bag_2) $(arg pos_scan_topic) 
+              --pos $(arg pos_bag_3) $(arg pos_scan_topic) 
+              --neg $(arg neg_bag_1) $(arg neg_scan_topic_1) 
+              --save_file $(arg save_file)" 
+              output="screen"/> 
+</launch>
+
+
