@@ -229,16 +229,20 @@ class KalmanMultiTracker:
         # Take the average of the local map's values centred at (map_x, map_y), with a kernal size of <kernel_size>
         # If called repeatedly on the same local_map, this could be sped up with a sum-table
         sum = 0
-        kernel_size = 2;
-        for i in xrange(map_x-kernel_size, map_x+kernel_size):
-            for j in xrange(map_y-kernel_size, map_y+kernel_size):
-                if i + j*self.local_map.info.height < len(self.local_map.data):
-                    sum += self.local_map.data[i + j*self.local_map.info.height]
-                else:  
-                    # We went off the map! position must be really close to an edge of local_map
-                    return self.in_free_space_threshold*2
+        kernel_size = 2
+        
+        try:
+            for i in xrange(map_x-kernel_size, map_x+kernel_size):
+                for j in xrange(map_y-kernel_size, map_y+kernel_size):
+                    if i + j*self.local_map.info.height < len(self.local_map.data):
+                        sum += self.local_map.data[i + j*self.local_map.info.height]
+                    else:  
+                        # We went off the map! position must be really close to an edge of local_map
+                        return self.in_free_space_threshold*2
+        except Exception as e:
+            rospy.logerr(e)
 
-        percent = sum/(((2.*kernel_size + 1)**2.)*100.)
+        percent = sum/(((2.*kernel_size + 1)**2.)*100.)        
         return percent
 
         
